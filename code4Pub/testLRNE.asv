@@ -1,0 +1,26 @@
+clear all
+close all
+clc
+%% testLRNE.m
+% This code file is used to test the LRNE algorithm on a 3D toy dataset
+% with 2 manifolds. There are two variant of the LRNE algorithm available
+% in this toolbox:
+%   1) CVX version: This version uses the CVX toolbox to solve the LRNE
+%   optimization and requires the the CVX toolbox for MATLAB available 
+%   online @ :http://cvxr.com/cvx.
+%   2) ADMM solution: In this case the optimization problem is solved using
+%   the ADMM based solution described in the paper.
+
+load test_dataSet.mat
+%% DISPLAY THE MANIFOLDS IN THE TEST DATASET
+figure('Color', [1,1,1])
+scatter3(totalPts(:,1),totalPts(:,2),totalPts(:,3),100,labels,'.')
+axis equal
+%% PERFORM LRNE TO GET THE LRNE RECONSTRUCTION MATRIX
+lambda = 1e-1;
+k = 30;
+% The CVX version
+% [R] = fnLowRankNeigh_cvx(totalPts',lambda,k, 1e-4, 1e-6, 1e2);
+% The ADMM version
+[R] = fnLowRankNeigh_ADMM(totalPts',lambda,k, 1e-4, 1e-6, 1e2);    
+%% PERFORM THE CLUSTERING TO GET THE MISCLASSIFICATION RATE
